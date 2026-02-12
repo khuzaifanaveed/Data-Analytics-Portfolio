@@ -13,6 +13,13 @@ The goal is to move beyond simple delay counts and answer:
 
 The project focuses on dimensional modeling, advanced DAX, and analytical storytelling in Power BI.
 
+## 📥 Data Source
+
+Data is sourced from the official [Infrabel Open Data portal](https://opendata.infrabel.be/explore/), which provides public access to Belgian railway punctuality and operational metrics.
+
+**Monthly data files:** Access individual monthly punctuality reports at [Infrabel Monthly raw punctuality data files](https://opendata.infrabel.be/explore/dataset/stiptheid-gegevens-maandelijksebestanden/table/?sort=mois).
+
+
 ---
 
 ## 📷 Dashboard Preview
