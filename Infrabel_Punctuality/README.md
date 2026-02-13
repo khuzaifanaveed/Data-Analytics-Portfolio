@@ -112,6 +112,7 @@ High-level performance indicators:
 - Total events: Total number of events recorded
 - Delayed events (>6 min): Defined according to Belgian railway standards
 - Punctuality rate: Percentage of events that are on time
+- Total System Delay (hours): Cumulative delay across the network
 - Average & median delay: Provides insight into typical delay durations
 
 Includes monthly trend analysis and train-type breakdown.
@@ -121,9 +122,9 @@ Includes monthly trend analysis and train-type breakdown.
 ### 🚉 Stations & Bottlenecks
 Identifies where delays concentrate:
 - Total delay (hours) per station: Gives a clear picture of which stations contribute most to overall delays 
-- Volume vs reliability (log-scale scatter): Plots station traffic against punctuality to identify high-impact stations
+- Volume vs reliability (log-scale scatter): Plots station traffic against average delay to identify high-impact stations
 - Worst punctuality ranking: Get an insight into which stations have the lowest on-time performance
-- Station performance table: Detailed metrics for each station, giving a comprehensive view of punctuality and delay patterns
+- Station performance table: Detailed metrics for each station, giving a comprehensive view of punctuality, consistency and delay patterns
 
 Infrastructure-only nodes were excluded to focus on passenger-relevant stations.
 
