@@ -7,7 +7,7 @@ SELECT  ROUND(SUM(TotalItemValue),2) AS TotalRevenue
 FROM factsales;
 
 # Total Order
-SELECT COUNT(DISTINCT order_id) AS TotalOrders
+SELECT COUNT(DISTINCT OrderID) AS TotalOrders
 FROM factsales;
 
 # Monthly trend
@@ -16,8 +16,10 @@ SELECT
     d.Month,
     SUM(f.TotalItemValue) AS MonthlyRevenue
 FROM factsales f
+JOIN dimorder dor
+	on f.OrderID = dor.OrderID
 JOIN dimdate d
-    ON f.order_date= d.FullDate
+    ON dor.OrderDate = d.FullDate
 GROUP BY d.Year, d.Month
 ORDER BY d.Year, d.Month;
 
@@ -25,14 +27,14 @@ ORDER BY d.Year, d.Month;
 # Product Performance
 # =================================================
 #
-# Top 10 products
+# Top 10 product categories
 SELECT
-    dp.product_category_name,
+    dp.ProductCategoryName,
     SUM(f.TotalItemValue) AS Revenue
 FROM factsales f
 JOIN dimproduct dp
-    ON f.product_id = dp.product_id
-GROUP BY dp.product_category_name
+    ON f.ProductID = dp.ProductID
+GROUP BY dp.ProductCategoryName
 ORDER BY Revenue DESC
 LIMIT 10;
 
@@ -40,16 +42,17 @@ LIMIT 10;
 SELECT
     ROUND(AVG(ItemCount),2) AS AvgItemsPerOrder
 FROM (
-    SELECT order_id, COUNT(*) AS ItemCount
-    FROM factsales
-    GROUP BY order_id
-);
+    SELECT f.OrderID, COUNT(*) AS ItemCount
+    FROM factsales f
+    JOIN dimorder dor
+		ON f.OrderID = dor.OrderID
+    GROUP BY OrderID
+) item_count_table;
 
 # =================================================
 # Customer Analysis
 # =================================================
 #
-# Repeat Customers
 SELECT
     CustomerSegment,
     COUNT(*) AS Customers
@@ -65,7 +68,7 @@ SELECT
     SUM(f.TotalItemValue) AS Revenue
 FROM factsales f
 JOIN dimseller ds
-    ON f.seller_id = ds.seller_id
+    ON f.SellerID = ds.SellerID
 GROUP BY ds.SellerKey
 ORDER BY Revenue DESC;
 
@@ -73,15 +76,15 @@ ORDER BY Revenue DESC;
 # Delivery Performance
 # =================================================
 #
-# Average delay
+# Average Delivery Time
 SELECT
     ROUND(AVG(DeliveryDelay),2) AS AvgDelayDays
 FROM factsales;
 
-# Late deliveries
+# Deliveries later than expected
 SELECT
     ROUND(
-        SUM(CASE WHEN DeliveryDelay > 0 THEN 1 ELSE 0 END)
+        SUM(CASE WHEN DeliveryEstimateDelay > 0 THEN 1 ELSE 0 END)
         / COUNT(*) * 100, 2
     ) AS LateDeliveryPct
 FROM factsales;
@@ -92,26 +95,28 @@ FROM factsales;
 #
 # Average review score
 SELECT
-    ROUND(AVG(review_score),2) AS AvgReviewScore
+    ROUND(AVG(ReviewScore),2) AS AvgReviewScore
 FROM factreviews;
 
 # Review vs delivery delay
 SELECT
     CASE 
-        WHEN DeliveryDelay > 0 THEN 'Late'
+        WHEN DeliveryEstimateDelay > 0 THEN 'Late'
         ELSE 'On Time'
     END AS DeliveryStatus,
-    ROUND(AVG(review_score),2) AS AvgRating
+    ROUND(AVG(ReviewScore),2) AS AvgRating
 FROM factreviews
 GROUP BY DeliveryStatus;
 
 # Rating by customer segment
 SELECT
     dc.CustomerSegment,
-    ROUND(AVG(fr.review_score),2) AS AvgRating
+    ROUND(AVG(fr.ReviewScore),2) AS AvgRating
 FROM factreviews fr
+JOIN dimorder dor
+	ON fr.OrderID = dor.OrderID
 JOIN dimcustomer dc
-    ON fr.customer_unique_id = dc.customer_unique_id
+    ON dor.CustomerUniqueID = dc.CustomerUniqueID
 GROUP BY dc.CustomerSegment;
 
 # =================================================
@@ -120,21 +125,29 @@ GROUP BY dc.CustomerSegment;
 #
 # Revenue by State
 SELECT
-    dc.customer_state,
+    dg.State,
     SUM(f.TotalItemValue) AS Revenue
 FROM factsales f
+JOIN dimorder dor
+	ON f.OrderID = dor.OrderID
 JOIN dimcustomer dc
-    ON f.customer_unique_id = dc.customer_unique_id
-GROUP BY dc.customer_state
+    ON dor.CustomerUniqueID= dc.CustomerUniqueID
+JOIN dimgeolocation dg
+	ON dc.ZipPrefix = dg.ZipPrefix
+GROUP BY dg.State
 ORDER BY Revenue DESC;
 
 # Average rating by state
 SELECT
-    dc.customer_state,
-    ROUND(AVG(fr.review_score),2) AS AvgRating
+    dg.State,
+    ROUND(AVG(fr.ReviewScore),2) AS AvgRating
 FROM factreviews fr
+JOIN dimorder dor
+	ON fr.OrderID = dor.OrderID
 JOIN dimcustomer dc
-    ON fr.customer_unique_id = dc.customer_unique_id
-GROUP BY dc.customer_state
+    ON dor.CustomerUniqueID = dc.CustomerUniqueID
+JOIN dimgeolocation dg
+	ON dc.ZipPrefix = dg.ZipPrefix
+GROUP BY dg.State
 ORDER BY AvgRating DESC;
 
