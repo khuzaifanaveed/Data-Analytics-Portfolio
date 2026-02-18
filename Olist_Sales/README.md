@@ -1,22 +1,23 @@
+
 # 🛒 Brazil E-Commerce Sales & Customer Analytics (2016–2018)
 
 ## 📊 Project Overview
 
 This project analyzes transactional e-commerce data from a large Brazilian marketplace (provided by Olist) covering 2016–2018.
 
-The goal is to move beyond simple revenue reporting and answer:
+The objective is to move beyond simple revenue reporting and answer:
 
-* What drives revenue across products and order sizes?
+* What drives revenue across products and order values?
 * How does the customer base grow and churn over time?
 * Are delays impacting customer satisfaction?
-* How do payment behavior and installments influence order value?
+* How do payment behavior and installments influence revenue and customer satisfaction?
 * Is revenue concentrated in specific segments or distributed broadly?
 
-The project focuses on:
+The project emphasizes:
 
 * Relational modeling in SQL (MySQL)
 * Star schema design
-* Advanced DAX (churn, cumulative customers, growth rates)
+* Advanced DAX (churn modeling, cumulative logic, growth metrics)
 * Analytical storytelling in Power BI
 
 ---
@@ -27,7 +28,7 @@ Data is sourced from the publicly available **Olist Brazilian E-Commerce Dataset
 
 🔗 [https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
-The dataset contains:
+The dataset includes:
 
 * Orders
 * Order items
@@ -45,8 +46,6 @@ The data represents real commercial transactions between 2016 and 2018.
 ## 📷 Dashboard Preview
 
 This dashboard analyzes revenue performance, product dynamics, customer lifecycle, and payment behavior across the Brazilian e-commerce marketplace (2016–2018).
-
-Below is a preview of the interactive Power BI report.
 
 ### 📌 Executive Overview
 
@@ -68,15 +67,6 @@ Below is a preview of the interactive Power BI report.
 
 ## 🗂️ Project Structure
 
-Perfect — thanks for clarifying 👍
-Let’s correct the **Project Structure** section to accurately reflect your actual folder setup.
-
-Here is the corrected Markdown section (you can replace the previous one in your README):
-
----
-
-## 🗂️ Project Structure
-
 ### 📁 01 - Raw Data
 
 Contains the original CSV files downloaded from the Olist Kaggle dataset.
@@ -87,7 +77,7 @@ These files are:
 * Stored in original format
 * Used as source data for SQL ingestion
 
-This folder ensures reproducibility and transparency of the data pipeline.
+This ensures reproducibility and transparency of the data pipeline.
 
 ---
 
@@ -106,7 +96,7 @@ Contains all SQL scripts used to build the analytical data model.
 * Filtering to delivered orders
 * Data validation checks
 * Creation of dimension tables:
-* 
+
   * `DimCustomer`
   * `DimProduct`
   * `DimSeller`
@@ -118,46 +108,41 @@ Contains all SQL scripts used to build the analytical data model.
   * `FactSales`
   * `FactReviews`
   * `FactPayments`
-
 * Product category simplification
+* Order value calculation and bucketing
 * Referential integrity checks between facts and dimensions
 
 #### 03 - Exploratory Analysis.sql
 
-Exploratory queries validating data quality and business metrics before modeling:
+Exploratory queries validating data quality and business metrics prior to dashboard development:
 
 **Revenue & Growth**
-* Total revenue calculation
-* Order count validation
+
+* Total revenue validation
 * Monthly revenue trend analysis
+* Order volume checks
 
 **Product Performance**
-* Top 10 product categories by revenue
+
+* Top categories and products by revenue
 * Average basket size (items per order)
 
 **Customer Analysis**
+
 * Customer segmentation distribution
 * Repeat customer identification
 
-**Seller Performance**
-* Revenue contribution by seller
-* Top performers ranking
+**Delivery & Satisfaction**
 
-**Delivery Performance**
-* Average delivery delay metrics
-* Late delivery percentage calculation
-
-**Reviews & Satisfaction**
-* Average review score across orders
-* Review correlation with delivery performance
-* Rating distribution by customer segment
+* Average delivery delay
+* Late delivery percentage
+* Rating distribution and delay correlation
 
 **Geography**
+
 * Revenue and rating analysis by state
-* Regional performance benchmarking
 
-This step ensured data integrity, validated join logic, and informed modeling decisions before Power BI visualization.
-
+This stage ensured data integrity and informed modeling decisions before Power BI implementation.
 
 ---
 
@@ -170,11 +155,11 @@ Contains:
 * Advanced DAX measures for:
 
   * Revenue growth
-  * Customer lifecycle
-  * Churn (120-day inactivity rule)
+  * Customer lifecycle modeling
+  * 120-day churn definition
   * Net customer growth
   * Order value distribution
-  * Installment analysis
+  * Installment behavior analysis
 
 The Power BI model includes:
 
@@ -185,19 +170,11 @@ The Power BI model includes:
 
 ---
 
-If you'd like, I can now:
-
-* Slightly tighten the README tone to sound more “senior-level”
-* Or create a short version specifically optimized for recruiters
-* Or generate a clean GitHub-ready final version with badges and formatting polish 🚀
-
----
-
 ## 📑 Dashboard Pages
 
 ### 📌 Executive Overview
 
-High-level business performance indicators:
+High-level performance indicators:
 
 * Total Revenue
 * Total Orders
@@ -206,13 +183,13 @@ High-level business performance indicators:
 * Monthly Revenue Trend
 * Revenue by State (map)
 
-Provides a top-level snapshot of marketplace health.
+Provides a consolidated snapshot of marketplace performance.
 
 ---
 
 ### 📦 Product Performance & Order Dynamics
 
-Focuses on product and basket structure:
+Focuses on product-level drivers and basket structure:
 
 * Revenue Contribution by Product Category
 * Top 10 Products by Revenue
@@ -223,8 +200,8 @@ Focuses on product and basket structure:
 This page highlights:
 
 * Revenue concentration
-* Basket size distribution
-* Whether expensive orders drive performance
+* Basket value distribution
+* Whether high-value orders disproportionately drive performance
 
 ---
 
@@ -232,8 +209,8 @@ This page highlights:
 
 Advanced customer analytics:
 
-* Total Customers (cumulative)
-* New Customers per month
+* Cumulative Total Customers
+* New Customers per Month
 * Churned Customers (120-day inactivity rule)
 * Net Customer Growth
 * Churn Rate
@@ -242,29 +219,29 @@ Advanced customer analytics:
 
 Key modeling concepts:
 
-* Churn defined dynamically based on last purchase date
-* Context-aware cumulative customer calculations
+* Dynamic churn calculation based on last purchase date
+* Context-aware cumulative customer logic
 
-This page highlights acquisition, retention, and sustainability of growth.
+This page evaluates acquisition, retention, and sustainability of growth.
 
 ---
 
 ### 💳 Payments & Customer Experience
 
-Analyzes financing behavior and customer satisfaction:
+Analyzes financing behavior and operational impact on satisfaction:
 
 * Revenue Contribution by Payment Type
 * Orders Contribution by Payment Type
 * Revenue per Order by Payment Type
 * Revenue by Installment Bin
 * Installments vs Satisfaction
-* Average Rating by Payment Type
+* Rating vs Delivery Delay
 
 This page explores:
 
-* Payment dominance
-* Installment impact on revenue
-* Relationship between financing behavior and customer experience
+* Payment method dominance
+* Installment impact on basket economics
+* The relationship between delivery performance and customer ratings
 
 ---
 
@@ -274,8 +251,8 @@ This page explores:
 * **Total Customers To Date** = Cumulative distinct customers up to selected date
 * **Net Customer Growth** = New − Churned
 * **Revenue Growth %** = Month-over-month change
-* **Order Value Bucketing** for basket analysis
-* **Star schema modeling** for proper filter propagation
+* **Order Value Bucketing** for basket structure analysis
+* **Star schema modeling** for controlled filter propagation
 
 ---
 
@@ -291,17 +268,17 @@ This page explores:
 ## 📝 Notes
 
 * Dataset sourced from Kaggle (Olist).
-* Project focuses on dimensional modeling and lifecycle analytics.
+* Project demonstrates full SQL → dimensional modeling → BI workflow.
 * Churn logic built dynamically using DAX and context handling.
-* Designed as a portfolio project demonstrating SQL + BI modeling proficiency.
+* Designed as a portfolio project showcasing end-to-end data analytics skills.
 
 ---
 
 ## 🚀 Future Extensions
 
-Potential future improvements:
+Potential improvements:
 
 * Profitability modeling (if cost data available)
 * Predictive churn modeling
-* Full ETL pipeline automation
-* Real-time dashboard deployment
+* Automated ETL pipeline
+* Cloud deployment with scheduled refresh
