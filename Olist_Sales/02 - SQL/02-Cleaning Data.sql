@@ -215,8 +215,8 @@ SELECT
     o.order_id AS OrderID,
     c.customer_unique_id AS CustomerUniqueID,
     DATE(o.order_purchase_timestamp) AS OrderDate,
-    o.order_delivered_customer_date AS OrderDeliveryDateTime,
-    o.order_estimated_delivery_date AS OrderEstimatedDeliveryDateTime
+    DATE(o.order_delivered_customer_date) AS OrderDeliveryDate,
+    DATE(o.order_estimated_delivery_date) AS OrderEstimatedDeliveryDate
 FROM clean_orders o
 JOIN stg_customers c
     ON o.customer_id = c.customer_id;

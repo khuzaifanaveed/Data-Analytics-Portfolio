@@ -109,7 +109,6 @@ Contains all SQL scripts used to build the analytical data model.
   * `FactReviews`
   * `FactPayments`
 * Product category simplification
-* Order value calculation and bucketing
 * Referential integrity checks between facts and dimensions
 
 #### 03 - Exploratory Analysis.sql
@@ -240,7 +239,7 @@ Analyzes financing behavior and operational impact on satisfaction:
 This page explores:
 
 * Payment method dominance
-* Installment impact on basket economics
+* Installment impact on revenue and satisfaction
 * The relationship between delivery performance and customer ratings
 
 ---
