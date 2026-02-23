@@ -105,7 +105,6 @@ SELECT
     MIN(c.customer_zip_code_prefix) AS ZipPrefix,
     MIN(o.order_purchase_timestamp) AS FirstPurchaseDateTime,
     DATE(MIN(o.order_purchase_timestamp)) AS FirstPurchaseDate,
-    COUNT(DISTINCT o.order_id) AS TotalOrders,
     CASE
         WHEN COUNT(DISTINCT o.order_id) >= 10 THEN 'Loyal'
         WHEN COUNT(DISTINCT o.order_id) BETWEEN 3 AND 9 THEN 'Regular'
@@ -115,6 +114,10 @@ FROM stg_customers c
 INNER JOIN stg_orders o
     ON c.customer_id = o.customer_id
 GROUP BY c.customer_unique_id;
+
+# Surrogate keys not used as primary keys due to memory errors
+ALTER TABLE DimCustomer
+ADD PRIMARY KEY (CustomerUniqueID);
 
 # -------------------------------------------------
 # Seller Dimension Table
@@ -127,6 +130,10 @@ SELECT
     MIN(seller_zip_code_prefix) AS ZipPrefix
 FROM stg_sellers
 GROUP BY seller_id;
+
+# Surrogate keys not used as primary keys due to memory errors
+ALTER TABLE DimSeller
+ADD PRIMARY KEY (SellerID);
 
 # -------------------------------------------------
 # Products Dimension Table
@@ -150,6 +157,10 @@ FROM stg_products p
 LEFT JOIN stg_cat_name_translations t
     ON p.product_category_name = t.product_category_name;
 
+# Surrogate keys not used as primary keys due to memory errors
+ALTER TABLE DimProduct
+ADD PRIMARY KEY (ProductID);
+
 # -------------------------------------------------
 # Geolocation Dimension Table
 # -------------------------------------------------
@@ -163,6 +174,10 @@ SELECT
     MAX(geolocation_state) AS State
 FROM stg_geolocations
 GROUP BY geolocation_zip_code_prefix;
+
+# Surrogate keys not used as primary keys due to memory errors
+ALTER TABLE DimGeolocation
+ADD PRIMARY KEY (ZipPrefix);
 
 # -------------------------------------------------
 # Date Dimension Table
@@ -220,6 +235,9 @@ SELECT
 FROM clean_orders o
 JOIN stg_customers c
     ON o.customer_id = c.customer_id;
+
+ALTER TABLE DimOrder
+ADD PRIMARY KEY (OrderID);
 
 # -------------------------------------------------
 # Sales Fact Table
@@ -311,7 +329,7 @@ WHERE NOT EXISTS (
 # -------------------------------------------------
 # Fact Reviews vs dimensions
 # -------------------------------------------------
-SELECT DISTINCT CustomerUniqueID
+SELECT DISTINCT OrderID
 FROM factreviews f
 WHERE NOT EXISTS (
     SELECT 1 
