@@ -104,6 +104,34 @@ GW Share shows a clear upward trend, with significant increases following major 
 
 ---
 
+## 🔎 Detection–Publication Correlation Analysis
+
+To assess whether gravitational wave detections influence research output, multiple correlation tests were performed:
+
+1. **Raw correlation (levels)**
+
+   * Moderate positive association (r ≈ 0.36)
+   * Likely influenced by shared long-term upward trends
+
+2. **Differenced correlation (month-to-month changes)**
+
+   * Weak and statistically insignificant (r ≈ 0.14)
+   * Suggests short-term detection fluctuations do not strongly drive immediate publication changes
+
+3. **Lagged correlation (3-month delay)**
+
+   * No correlation (r ≈ 0.01)
+   * Indicates that publication response to detections may be delayed beyond 3 months, or there maybe no direct short-term responsiveness and the publication growth is more structurally driven
+
+4. **Detrended correlation (trend removed)**
+
+   * Weak, borderline significant relationship
+   * Indicates much of the observed association is driven by shared structural growth rather than direct short-term responsiveness
+
+While detection activity and publication share are positively associated, much of this relationship reflects long-term structural expansion in gravitational wave research. Evidence for short-run responsiveness is negligible and potentially delayed beyond the 3-month lag tested.
+
+---
+
 ### Phase-Based Institutional Model
 
 Each month classified as:
