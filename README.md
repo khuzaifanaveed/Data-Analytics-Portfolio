@@ -57,40 +57,7 @@ I am motivated to apply my analytical and technical skills in data analysis, bus
 
 ---
 
-# 🛰 Project 1 — Gravitational Wave Research & Infrastructure Analysis
-
-Full Project Documentation can be found in the [GW_Detections](GW_Detections) directory.
-
-## Overview
-
-This project investigates how gravitational wave detections and detector network expansion influenced scientific research output.
-
-The analysis combines:
-
-- Public gravitational wave detection data
-- arXiv publication data
-- Time-series regression models
-- Autoregressive modeling
-- Structural phase classification
-
-## Key Skills Demonstrated
-
-- Statistical modeling (OLS & AR(1))
-- Time-series analysis
-- API-based data collection
-- Structural trend interpretation
-
-## Tools Used
-
-- Python
-- pandas
-- statsmodels
-- matplotlib
-- arXiv API
-
----
-
-# 🚆 Project 2 — NMBS / SNCB Railway Punctuality & Delay Analysis
+# 🚆 Project 1 — NMBS / SNCB Railway Punctuality & Delay Analysis
 
 Full Project Documentation can be found in the [Infrabel_Punctuality](Infrabel_Punctuality) directory.
 
@@ -117,7 +84,6 @@ The objective was to move beyond simple delay counts and evaluate:
 
 ## Key Skills Demonstrated
 
-- Star schema implementation
 - Advanced DAX
 - Performance KPI modeling
 - Data transformation in Power Query
@@ -131,7 +97,7 @@ The objective was to move beyond simple delay counts and evaluate:
 
 ---
 
-# 🛒 Project 3 — Brazil E-Commerce Sales & Customer Analytics
+# 🛒 Project 2 — Brazil E-Commerce Sales & Customer Analytics
 
 Full Project Documentation can be found in the [Olist_Sales](Olist_Sales) directory.
 
@@ -171,6 +137,39 @@ The objective was to understand:
 - Power BI
 - DAX
 - Excel
+
+---
+
+# 🛰 Project 3 — Gravitational Wave Research & Infrastructure Analysis
+
+Full Project Documentation can be found in the [GW_Detections](GW_Detections) directory.
+
+## Overview
+
+This project investigates how gravitational wave detections and detector network expansion influenced scientific research output.
+
+The analysis combines:
+
+- Public gravitational wave detection data
+- arXiv publication data
+- Time-series regression models
+- Autoregressive modeling
+- Structural phase classification
+
+## Key Skills Demonstrated
+
+- Statistical modeling (OLS & AR(1))
+- Time-series analysis
+- API-based data collection
+- Structural trend interpretation
+
+## Tools Used
+
+- Python
+- pandas
+- statsmodels
+- matplotlib
+- arXiv API
 
 ---
 

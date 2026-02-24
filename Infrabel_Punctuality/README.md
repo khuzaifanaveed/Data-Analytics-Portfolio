@@ -94,8 +94,7 @@ Contains:
 
 Power BI includes:
 
-- Star schema modeling
-- Calendar and Hour dimension tables
+- Calendar dimension table
 - Dynamic Arrivals / Departures selector
 - Context-aware DAX measures
 - Impact % (station share of total system delay)
