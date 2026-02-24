@@ -78,16 +78,20 @@ ORDER BY Revenue DESC;
 #
 # Average Delivery Time
 SELECT
-    ROUND(AVG(DeliveryDelay),2) AS AvgDelayDays
-FROM factsales;
+    ROUND(AVG(dor.DeliveryDelay),2) AS AvgDelayDays
+FROM factsales fs
+JOIN dimorder dor
+	ON fs.OrderID = dor.OrderID;
 
 # Deliveries later than expected
 SELECT
     ROUND(
-        SUM(CASE WHEN DeliveryEstimateDelay > 0 THEN 1 ELSE 0 END)
+        SUM(CASE WHEN dor.DeliveryEstimateDelay > 0 THEN 1 ELSE 0 END)
         / COUNT(*) * 100, 2
     ) AS LateDeliveryPct
-FROM factsales;
+FROM factsales fs
+JOIN dimorder dor
+	ON fs.OrderID = dor.OrderID;
 
 # =================================================
 # Reviews
@@ -101,11 +105,13 @@ FROM factreviews;
 # Review vs delivery delay
 SELECT
     CASE 
-        WHEN DeliveryEstimateDelay > 0 THEN 'Late'
+        WHEN dor.DeliveryEstimateDelay > 0 THEN 'Late'
         ELSE 'On Time'
     END AS DeliveryStatus,
     ROUND(AVG(ReviewScore),2) AS AvgRating
-FROM factreviews
+FROM factreviews fr
+JOIN dimorder dor
+	ON fr.OrderID = dor.OrderID
 GROUP BY DeliveryStatus;
 
 # Rating by customer segment

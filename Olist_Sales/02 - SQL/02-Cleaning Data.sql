@@ -100,10 +100,9 @@ WHERE order_status = 'delivered'
 DROP TABLE IF EXISTS DimCustomer;
 CREATE TABLE DimCustomer AS
 SELECT
+    DISTINCT(c.customer_unique_id) AS CustomerUniqueID,
     ROW_NUMBER() OVER (ORDER BY c.customer_unique_id) AS CustomerKey,
-    c.customer_unique_id AS CustomerUniqueID,
     MIN(c.customer_zip_code_prefix) AS ZipPrefix,
-    MIN(o.order_purchase_timestamp) AS FirstPurchaseDateTime,
     DATE(MIN(o.order_purchase_timestamp)) AS FirstPurchaseDate,
     CASE
         WHEN COUNT(DISTINCT o.order_id) >= 10 THEN 'Loyal'
@@ -125,8 +124,8 @@ ADD PRIMARY KEY (CustomerUniqueID);
 DROP TABLE IF EXISTS DimSeller;
 CREATE TABLE DimSeller AS
 SELECT
+	DISTINCT(seller_id) AS SellerID,
     ROW_NUMBER() OVER (ORDER BY seller_id) AS SellerKey,
-    seller_id AS SellerID,
     MIN(seller_zip_code_prefix) AS ZipPrefix
 FROM stg_sellers
 GROUP BY seller_id;
@@ -141,8 +140,8 @@ ADD PRIMARY KEY (SellerID);
 DROP TABLE IF EXISTS DimProduct;
 CREATE TABLE DimProduct AS
 SELECT
+	DISTINCT(p.product_id) AS ProductID,
     ROW_NUMBER() OVER (ORDER BY p.product_id) AS ProductKey,
-    p.product_id AS ProductID,
     CASE 
 		WHEN p.product_category_name IS NOT NULL THEN REPLACE(COALESCE(t.product_category_name_english, p.product_category_name), "_", " ") 
         ELSE "Miscellaneous"
@@ -167,7 +166,7 @@ ADD PRIMARY KEY (ProductID);
 DROP TABLE IF EXISTS DimGeolocation;
 CREATE TABLE DimGeolocation AS
 SELECT
-    geolocation_zip_code_prefix AS ZipPrefix,
+    DISTINCT(geolocation_zip_code_prefix) AS ZipPrefix,
     AVG(geolocation_lat) AS AvgLatitude,
     AVG(geolocation_lng) AS AvgLongitude,
     MAX(geolocation_city) AS City,
@@ -231,7 +230,11 @@ SELECT
     c.customer_unique_id AS CustomerUniqueID,
     DATE(o.order_purchase_timestamp) AS OrderDate,
     DATE(o.order_delivered_customer_date) AS OrderDeliveryDate,
-    DATE(o.order_estimated_delivery_date) AS OrderEstimatedDeliveryDate
+    DATE(o.order_estimated_delivery_date) AS OrderEstimatedDeliveryDate,
+    DATEDIFF(o.order_delivered_customer_date,
+             DATE(o.order_purchase_timestamp)) AS DeliveryDelay,
+    DATEDIFF(o.order_delivered_customer_date,
+             o.order_estimated_delivery_date) AS DeliveryEstimateDelay
 FROM clean_orders o
 JOIN stg_customers c
     ON o.customer_id = c.customer_id;
@@ -248,17 +251,16 @@ SELECT
     oi.order_id AS OrderID,
     oi.product_id AS ProductID,
     oi.seller_id AS SellerID,
+    oi.order_item_id AS OrderItemID,
     oi.price AS ItemPrice,
     oi.freight_value AS ItemFreightValue,
-    (oi.price + oi.freight_value) AS TotalItemValue,
-    DATEDIFF(o.order_delivered_customer_date,
-             DATE(o.order_purchase_timestamp)) AS DeliveryDelay,
-    DATEDIFF(o.order_delivered_customer_date,
-             o.order_estimated_delivery_date) AS DeliveryEstimateDelay
+    (oi.price + oi.freight_value) AS TotalItemValue
 FROM clean_orders o
 JOIN stg_order_items oi
     ON o.order_id = oi.order_id;
 
+ALTER TABLE FactSales
+ADD PRIMARY KEY (OrderID, OrderItemID);
 
 # -------------------------------------------------
 # Reviews Fact Table
@@ -268,11 +270,7 @@ CREATE TABLE FactReviews AS
 SELECT
     r.order_id AS OrderID,
     DATE(r.review_creation_date) AS ReviewDate,
-    r.review_score AS ReviewScore,
-    DATEDIFF(o.order_delivered_customer_date,
-             DATE(o.order_purchase_timestamp)) AS DeliveryDelay,
-    DATEDIFF(o.order_delivered_customer_date,
-             o.order_estimated_delivery_date) AS DeliveryEstimateDelay
+    r.review_score AS ReviewScore
 FROM stg_reviews r
 JOIN clean_orders o
     ON r.order_id = o.order_id
