@@ -142,7 +142,7 @@ CREATE TABLE DimProduct AS
 SELECT
 	DISTINCT(p.product_id) AS ProductID,
     ROW_NUMBER() OVER (ORDER BY p.product_id) AS ProductKey,
- REPLACE(COALESCE(t.product_category_name_english, p.product_category_name, "Miscellaneous"), "_", " ") AS ProductCategoryName,
+	REPLACE(COALESCE(t.product_category_name_english, p.product_category_name, "Miscellaneous"), "_", " ") AS ProductCategoryName,
     p.product_weight_g AS ProductWeight,
     CASE
         WHEN p.product_weight_g < 500 THEN 'Light'
